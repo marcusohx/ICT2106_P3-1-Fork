@@ -135,23 +135,23 @@ export default class Project extends React.Component {
                 error={this.state.error}
                 permissions={this.props.permissions}
                 requestError={this.requestError}
-                extraComponents = {
-                    [
-                        {
-                            label: "Generate PDF", 
-                            key: "generatePDF", 
-                            requiredPerms: ["Create","Update","Delete","Read"],
-                            component: <GeneratePDF 
-                            settings={this.settings} 
-                            requestRefresh={this.requestRefresh} 
-                            fieldSettings = {this.state.settings.data.FieldSettings} 
-                            data={this.state.content.data} 
-                            requestError={this.requestError}
-                            api = {this.settings.api}>
-                            </GeneratePDF>
-                        }
-                    ]
-                }
+                // extraComponents = {
+                //     [
+                //         {
+                //             label: "Generate PDF", 
+                //             key: "generatePDF", 
+                //             requiredPerms: ["Create","Update","Delete","Read"],
+                //             component: <GeneratePDF 
+                //             settings={this.props.settings} 
+                //             requestRefresh={this.props.requestRefresh} 
+                //             fieldSettings = {this.props.fieldSettings} 
+                //             data={this.props.data} 
+                //             requestError={this.props.requestError}
+                //             api = {this.settings.api}>
+                //             </GeneratePDF>
+                //         }
+                //     ]
+                // }
                 >
                 {/* {this.state.content.data.map((item, index) => {
                     return (

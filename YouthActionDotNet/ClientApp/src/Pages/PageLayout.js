@@ -81,7 +81,7 @@ export default class DatapageLayout extends React.Component {
         }
         tableHeaderActions.push({ label: "Generate Spreadsheet", onClick: () => { this.setExpansionContent("gs") } },)
         // TO BE COMMENTED OUT
-        // tableHeaderActions.push({ label: "Generate PDF", onClick: () => { this.setExpansionContent("gpdf") } },) 
+        tableHeaderActions.push({ label: "Generate PDF", onClick: () => { this.setExpansionContent("gpdf") } },) 
         
         components.forEach((component)=>{
             tableHeaderActions.push({label: component.label, onClick: ()=>{this.setExpansionContent(component.key)}})
@@ -491,12 +491,12 @@ export class HeaderExpansion extends React.Component {
             componentsToRender.push(component.component)
         })
         // TO BE COMMENTED OUT
-        // steps[Object.keys(steps).length] = "gpdf"
-        // componentsToRender.push(<GeneratePDF settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings = {this.props.fieldSettings} data={this.props.data} requestError={this.props.requestError}></GeneratePDF>)
-        // this.props.extraComponents.forEach((component)=>{
-        //     steps[Object.keys(steps).length] = component.key
-        //     componentsToRender.push(component.component)
-        // })
+        steps[Object.keys(steps).length] = "gpdf"
+        componentsToRender.push(<GeneratePDF settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings = {this.props.fieldSettings} data={this.props.data} requestError={this.props.requestError}></GeneratePDF>)
+        this.props.extraComponents.forEach((component)=>{
+            steps[Object.keys(steps).length] = component.key
+            componentsToRender.push(component.component)
+        })
         this.setState({
             steps: steps,
             componentsToRender: componentsToRender,
@@ -815,102 +815,102 @@ class GenerateSpreadsheet extends React.Component{
     
 }
 // ---------------------------------------------------TO BE COMMENTED OUT------------------------------------------
-// class GeneratePDF extends React.Component{
-//     state={
-//         columns: [],
-//         // spreadsheetReady: false,
-//         pdfReady: false,
-//     }
+class GeneratePDF extends React.Component{
+    state={
+        columns: [],
+        // spreadsheetReady: false,
+        pdfReady: false,
+    }
     
-//     componentDidMount(){
-//         let columns = [];
-//         for(var i = 0; i < Object.keys(this.props.fieldSettings).length; i++){
-//             columns.push(
-//                 {
-//                     label: Object.keys(this.props.fieldSettings)[i],
-//                     key: Object.keys(this.props.fieldSettings)[i],
-//                 }
-//             );
-//         }
-//         this.setState({
-//             columns: columns
-//         });
-//     }
+    componentDidMount(){
+        let columns = [];
+        for(var i = 0; i < Object.keys(this.props.fieldSettings).length; i++){
+            columns.push(
+                {
+                    label: Object.keys(this.props.fieldSettings)[i],
+                    key: Object.keys(this.props.fieldSettings)[i],
+                }
+            );
+        }
+        this.setState({
+            columns: columns
+        });
+    }
 
-//     reOrderColumns = (index, direction) => {
-//         var tempColumns = this.state.columns;
-//         if(direction === "up"){
-//             if(index > 0){
-//                 var temp = tempColumns[index];
-//                 tempColumns[index] = tempColumns[index - 1];
-//                 tempColumns[index - 1] = temp;
-//             }
-//         } else {
-//             if(index < tempColumns.length - 1){
-//                 var temp = tempColumns[index];
-//                 tempColumns[index] = tempColumns[index + 1];
-//                 tempColumns[index + 1] = temp;
-//             }
-//         }
-//         this.setState({
-//             columns: tempColumns
-//         });
-//     }
+    reOrderColumns = (index, direction) => {
+        var tempColumns = this.state.columns;
+        if(direction === "up"){
+            if(index > 0){
+                var temp = tempColumns[index];
+                tempColumns[index] = tempColumns[index - 1];
+                tempColumns[index - 1] = temp;
+            }
+        } else {
+            if(index < tempColumns.length - 1){
+                var temp = tempColumns[index];
+                tempColumns[index] = tempColumns[index + 1];
+                tempColumns[index + 1] = temp;
+            }
+        }
+        this.setState({
+            columns: tempColumns
+        });
+    }
 
-//     generatePDF = () =>{
-//         this.setState({
-//             pdfReady : false
-//         })
+    generatePDF = () =>{
+        this.setState({
+            pdfReady : false
+        })
 
-//         // Fake loading time to show false sense of progress
-//         setTimeout(() => {
-//             this.setState({
-//                 pdfReady : true
-//             })}, 1000);
-//     }
-//     exportPDF = () => {
+        // Fake loading time to show false sense of progress
+        setTimeout(() => {
+            this.setState({
+                pdfReady : true
+            })}, 1000);
+    }
+    exportPDF = () => {
 
-//         const report = new JsPDF('portrait','pt','a4');
-//         report.html(document.body).then(() => {
-//             report.save(this.props.settings.title + ".pdf");
-//         });
-//     }
+        const report = new JsPDF('portrait','pt','a4');
+        report.html(document.body).then(() => {
+            report.save(this.props.settings.title + ".pdf");
+        });
+    }
 
-//     render(){
-//         return (
-//             <div className="container-fluid generate-spreadsheet">
-//                 <div className="column-order">
-//                     {this.state.columns.map((column, index) => {
-//                         return <div className="column">
-//                             <div className="column-order-buttons">
-//                                 <IconButton className={"invert"} icon={<i className="bi bi-arrow-up"></i>} onClick={() => this.reOrderColumns(index, "up")}></IconButton>
-//                                 <IconButton className={"invert"} icon={<i className="bi bi-arrow-down"></i>} onClick={() => this.reOrderColumns(index, "down")}></IconButton>
-//                             </div>
-//                             <div className="column-name">{column.label}</div>
-//                         </div>
-//                     })}     
-//                 </div>
-//                 <div className="generate-actions">
-//                     <StdButton onClick={() => this.generatePDF()}>
-//                         Generate PDF
-//                     </StdButton>
+    render(){
+        return (
+            <div className="container-fluid generate-spreadsheet">
+                <div className="column-order">
+                    {this.state.columns.map((column, index) => {
+                        return <div className="column">
+                            <div className="column-order-buttons">
+                                <IconButton className={"invert"} icon={<i className="bi bi-arrow-up"></i>} onClick={() => this.reOrderColumns(index, "up")}></IconButton>
+                                <IconButton className={"invert"} icon={<i className="bi bi-arrow-down"></i>} onClick={() => this.reOrderColumns(index, "down")}></IconButton>
+                            </div>
+                            <div className="column-name">{column.label}</div>
+                        </div>
+                    })}     
+                </div>
+                <div className="generate-actions">
+                    <StdButton onClick={() => this.generatePDF()}>
+                        Generate PDF
+                    </StdButton>
 
-//                     {this.state.pdfReady ?
+                    {this.state.pdfReady ?
                     
-//                     // <CSVLink data={this.props.data} className={"forget-password"} headers={this.state.columns} filename={this.props.settings.title + ".csv"}>Download</CSVLink>
-//                     <button onClick={this.exportPDF} type="button">Export PDF</button>
-//                     :
-//                     <div className="spinner-border" role="status">
-//                         <span className="visually-hidden">Loading...</span>
-//                     </div>
-//                     }    
-//                 </div>
-//             </div>
-//         )
-//     }
+                    // <CSVLink data={this.props.data} className={"forget-password"} headers={this.state.columns} filename={this.props.settings.title + ".csv"}>Download</CSVLink>
+                    <button onClick={this.exportPDF} type="button">Export PDF</button>
+                    :
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    }    
+                </div>
+            </div>
+        )
+    }
 
     
-// }
+}
 
 class ColumnSettings extends React.Component {
     render() {
