@@ -6,12 +6,15 @@ import { StdInput } from "../Components/input";
 import SlideDrawer, { DrawerItemNonLink } from "../Components/sideNav";
 import { Cell, ListTable, HeaderRow, ExpandableRow } from "../Components/tableComponents";
 import {CSVLink} from "react-csv";
+import { FaFileWord} from 'react-icons/fa';
+import { FaFileCsv} from 'react-icons/fa';
+import {FaFilePdf} from 'react-icons/fa';
 import U from "../Utilities/utilities";
 
 export const searchSuggestions = [
 ]
 
-const CurrentTags = [
+const CurrentTags = [   
 ]
 
 const settings = {
@@ -264,7 +267,7 @@ export default class DatapageLayout extends React.Component {
                                 handleSeeMore={this.handleSeeMore} 
                                 handleClose={this.handleClose} 
                                 popUpContent={this.state.popUpContent}
-                                perms={this.state.perms}><br></br><button color="red">UNPIN PROJECT</button>
+                                perms={this.state.perms}><br></br><button color="red">UNPIN PROJECT</button><br></br><br></br>Export to:<FaFileWord size={30}/><FaFilePdf size={30}/><FaFileCsv size={30}/>
                                     {this.props.children? 
                                     this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
                                     ""}
@@ -297,7 +300,7 @@ export default class DatapageLayout extends React.Component {
                                 handleSeeMore={this.handleSeeMore} 
                                 handleClose={this.handleClose} 
                                 popUpContent={this.state.popUpContent}
-                                perms={this.state.perms}><br></br><button>PIN PROJECT</button>
+                                perms={this.state.perms}><br></br><button>PIN PROJECT</button><br></br><br></br>Export to:<FaFileWord size={30}/><FaFilePdf size={30}/><FaFileCsv size={30}/>
                                     {this.props.children? 
                                     this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
                                     ""}
