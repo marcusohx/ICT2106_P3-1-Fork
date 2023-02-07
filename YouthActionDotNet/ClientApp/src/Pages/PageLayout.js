@@ -239,6 +239,7 @@ export default class DatapageLayout extends React.Component {
                     extraComponents={this.state.extraComponents}
                     ></TableHeader>
                     <TableFooter settings={this.props.settings} toggle={this.drawerToggleClickHandler} showBottomMenu={this.state.showBottomMenu}></TableFooter>
+                    
                     <DivSpacing spacing={1}></DivSpacing>
                     {/* ----------------------------------------------vvvvvvvvv TO BE COMMENTED OUT vvvvvvvvvvvv------------------------------ */}
                     <div><h1>Pinned Projects</h1></div>
@@ -263,7 +264,7 @@ export default class DatapageLayout extends React.Component {
                                 handleSeeMore={this.handleSeeMore} 
                                 handleClose={this.handleClose} 
                                 popUpContent={this.state.popUpContent}
-                                perms={this.state.perms}>
+                                perms={this.state.perms}><br></br><button color="red">UNPIN PROJECT</button>
                                     {this.props.children? 
                                     this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
                                     ""}
@@ -296,7 +297,7 @@ export default class DatapageLayout extends React.Component {
                                 handleSeeMore={this.handleSeeMore} 
                                 handleClose={this.handleClose} 
                                 popUpContent={this.state.popUpContent}
-                                perms={this.state.perms}>
+                                perms={this.state.perms}><br></br><button>PIN PROJECT</button>
                                     {this.props.children? 
                                     this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
                                     ""}
