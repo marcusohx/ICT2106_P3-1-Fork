@@ -217,7 +217,7 @@ export default class DatapageLayout extends React.Component {
                         ></IconButton>
                     </div>
                 }
-                <div className="col-12 d-flex flex-column h-100">
+                <div className="col-12 d-flex flex-column h-50">
                     
                     <TableHeader actions={
                         this.state.tableHeaderActions
@@ -240,6 +240,41 @@ export default class DatapageLayout extends React.Component {
                     ></TableHeader>
                     <TableFooter settings={this.props.settings} toggle={this.drawerToggleClickHandler} showBottomMenu={this.state.showBottomMenu}></TableFooter>
                     <DivSpacing spacing={1}></DivSpacing>
+                    {/* ----------------------------------------------vvvvvvvvv TO BE COMMENTED OUT vvvvvvvvvvvv------------------------------ */}
+                    <div><h1>Pinned Projects</h1></div>
+                    <div className="d-flex justify-content-center align-items-start flex-fill">
+                        <ListTable settings={this.settings}>
+                            <HeaderRow>
+                                {Object.keys(this.props.headers).map((key, index) => {
+                                    return <Cell width={"100%"} key={index}>{this.props.headers[key].displayHeader}</Cell>
+                                })}
+                            </HeaderRow>
+                            {this.state.data && 
+                            
+                            currentItems.map((row, index) => {      
+                                return <ExpandableRow 
+                                updateHandle={this.props.updateHandle} 
+                                values={row} 
+                                fieldSettings={this.props.fieldSettings} 
+                                key={index} 
+                                settings={settings} 
+                                headers={this.props.headers} 
+                                setExpansionContent={this.setExpansionContent} 
+                                handleSeeMore={this.handleSeeMore} 
+                                handleClose={this.handleClose} 
+                                popUpContent={this.state.popUpContent}
+                                perms={this.state.perms}>
+                                    {this.props.children? 
+                                    this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
+                                    ""}
+                                </ExpandableRow>
+                            })}
+                        </ListTable>
+                    </div>
+                    {/* -----------------------------------------^^^^^^^^ TO BE COMMENTED OUT ^^^^^^^^----------------------------------- */}
+                    <TableFooter settings={this.props.settings} toggle={this.drawerToggleClickHandler} showBottomMenu={this.state.showBottomMenu}></TableFooter>
+                    <DivSpacing spacing={1}></DivSpacing>
+                    <div><h1>Projects</h1></div>
                     <div className="d-flex justify-content-center align-items-start flex-fill">
                         <ListTable settings={this.settings}>
                             <HeaderRow>
@@ -339,6 +374,7 @@ export default class DatapageLayout extends React.Component {
                         this.state.tableHeaderActions
                 } settings={this.settings} show={this.state.drawerOpen} showBottomMenu={this.state.showBottomMenu} handles={this.setExpansionContent}></BottomMenu>
             </div>
+            
             :
             <AccessDeniedPanel>
             </AccessDeniedPanel>

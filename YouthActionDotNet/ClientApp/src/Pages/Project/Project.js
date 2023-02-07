@@ -5,6 +5,9 @@ import { Loading } from "../../Components/appCommon"
 import { IconButtonWithText, MultiStepBox, StdButton, IconButton } from "../../Components/common"
 import { StdInput } from "../../Components/input"
 import DatapageLayout from "../PageLayout"
+import TableHeader from "../PageLayout"
+import HeaderExpansion from "../PageLayout"
+import HeaderExpansionPane from "../PageLayout"
 
 export default class Project extends React.Component {
     state={
@@ -138,8 +141,34 @@ export default class Project extends React.Component {
                 extraComponents = {
                     [
                         {
-                            label: "Generate PDF", 
+                            label: "Generate Report PDF", 
                             key: "generatePDF", 
+                            requiredPerms: ["Create","Update","Delete","Read"],
+                            component: <GeneratePDF 
+                            settings={this.settings} 
+                            requestRefresh={this.requestRefresh} 
+                            fieldSettings = {this.state.settings.data.FieldSettings} 
+                            data={this.state.content.data} 
+                            requestError={this.requestError}
+                            api = {this.settings.api}>
+                            </GeneratePDF>
+                        },
+                        {
+                            label: "Generate Report CSV", 
+                            key: "generateCSV", 
+                            requiredPerms: ["Create","Update","Delete","Read"],
+                            component: <GeneratePDF 
+                            settings={this.settings} 
+                            requestRefresh={this.requestRefresh} 
+                            fieldSettings = {this.state.settings.data.FieldSettings} 
+                            data={this.state.content.data} 
+                            requestError={this.requestError}
+                            api = {this.settings.api}>
+                            </GeneratePDF>
+                        },
+                        {
+                            label: "Generate Report Word", 
+                            key: "generateWord", 
                             requiredPerms: ["Create","Update","Delete","Read"],
                             component: <GeneratePDF 
                             settings={this.settings} 
@@ -161,9 +190,23 @@ export default class Project extends React.Component {
                     )
                 })}     */}
             </DatapageLayout>
+            
             )
         }
     }
+}
+
+class PinProject extends React.Component{
+    state={
+        columns: [],
+        pdfReady: false,
+        loading:true,
+    }
+    // render(){
+    //     return(
+            
+    //     )
+    // }
 }
 
 class GeneratePDF extends React.Component{
@@ -175,8 +218,7 @@ class GeneratePDF extends React.Component{
     
     componentDidMount(){
         let columns = [];
-        console.log("Hello World");
-        console.log(this.props.fieldSettings);
+        console.log("Generate PDF componentDidMount");
         for(var i = 0; i < Object.keys(this.props.fieldSettings).length; i++){
             columns.push(
                 {
