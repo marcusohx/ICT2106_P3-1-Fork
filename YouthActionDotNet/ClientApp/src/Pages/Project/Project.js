@@ -1,13 +1,11 @@
 
 import React from "react"
-import JsPDF from 'jspdf';
+import JsPDF from 'jspdf'
 import { Loading } from "../../Components/appCommon"
 import { IconButtonWithText, MultiStepBox, StdButton, IconButton } from "../../Components/common"
 import { StdInput } from "../../Components/input"
 import DatapageLayout from "../PageLayout"
-import TableHeader from "../PageLayout"
-import HeaderExpansion from "../PageLayout"
-import HeaderExpansionPane from "../PageLayout"
+import { Cell, ListTable, HeaderRow, ExpandableRow } from "../../Components/tableComponents";
 
 export default class Project extends React.Component {
     state={
@@ -141,6 +139,22 @@ export default class Project extends React.Component {
                 extraComponents = {
                     [
                         {
+                            label: "Archived Projects", 
+                            key: "archivedProjects", 
+                            requiredPerms: ["Create","Update","Delete","Read"],
+                            component: <ArchivedProjects 
+                            settings={this.settings} 
+                            requestRefresh={this.requestRefresh} 
+                            updateHandle = {this.props.updateHandle}
+                            headers={this.state.settings.data.ColumnSettings}
+                            fieldSettings = {this.state.settings.data.FieldSettings} 
+                            setExpansionContent={this.props.setExpansionContent} 
+                            data={this.state.content.data} 
+                            requestError={this.requestError}
+                            api = {this.settings.api}>
+                            </ArchivedProjects>
+                        },
+                        {
                             label: "Generate Report PDF", 
                             key: "generatePDF", 
                             requiredPerms: ["Create","Update","Delete","Read"],
@@ -196,17 +210,77 @@ export default class Project extends React.Component {
     }
 }
 
-class PinProject extends React.Component{
+class ArchivedProjects extends React.Component{
     state={
-        columns: [],
-        pdfReady: false,
-        loading:true,
+        drawerOpen: false,
+        expanded: false,
+        showBottomMenu: false,
+        expansionContent: "",
+        expansionComponent: "",
+        popUpContent: "",
+        data: this.props.data,
+        itemsPerPage: 20,
+        currentPage: 1,
+        pageNumbers: [],
     }
-    // render(){
-    //     return(
-            
-    //     )
-    // }
+    
+    componentDidMount(){
+        // let columns = [];
+        // for(var i = 0; i < Object.keys(this.props.fieldSettings).length; i++){
+        //     columns.push(
+        //         {
+        //             label: Object.keys(this.props.fieldSettings)[i],
+        //             key: Object.keys(this.props.fieldSettings)[i],
+        //         }
+        //     );
+        // }
+        // this.setState({
+        //     columns: columns
+        // });
+    }
+    render(){
+        if(this.state.content === ""){
+            return <div></div>
+        }
+        const indexOfLastItem = this.state.currentPage * this.state.itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage;
+        const currentItems = this.state.data.slice(indexOfFirstItem, indexOfLastItem);
+        console.log("First and last: " + indexOfFirstItem + indexOfLastItem)
+        return (
+            <div className="col-12 d-flex flex-column h-50">
+                    <div className="d-flex justify-content-center align-items-start flex-fill">
+                        <ListTable settings={this.settings}>
+                            <HeaderRow>
+                                {Object.keys(this.props.headers).map((key, index) => {
+                                    return <Cell width={"100%"} key={index}>{this.props.headers[key].displayHeader}</Cell>
+                                })}
+                            </HeaderRow>
+                            {this.state.data && 
+                            
+                            currentItems.map((row, index) => {      
+                                return <ExpandableRow 
+                                updateHandle={this.props.updateHandle} 
+                                values={row} 
+                                fieldSettings={this.props.fieldSettings} 
+                                key={index} 
+                                settings={this.settings} 
+                                headers={this.props.headers} 
+                                setExpansionContent={this.setExpansionContent} 
+                                handleSeeMore={this.handleSeeMore} 
+                                handleClose={this.handleClose} 
+                                popUpContent={this.state.popUpContent}
+                                perms={this.state.perms}><br></br><button color="red">UNPIN PROJECT</button>
+                                    {this.props.children? 
+                                    this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
+                                    ""}
+                                </ExpandableRow>
+                            })}
+                        </ListTable>
+                    </div>
+            </div>
+        )
+    }
+    
 }
 
 class GeneratePDF extends React.Component{
