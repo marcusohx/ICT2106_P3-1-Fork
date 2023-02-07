@@ -267,7 +267,7 @@ export default class DatapageLayout extends React.Component {
                                 handleSeeMore={this.handleSeeMore} 
                                 handleClose={this.handleClose} 
                                 popUpContent={this.state.popUpContent}
-                                perms={this.state.perms}><br></br><button color="red">UNPIN PROJECT</button><br></br><br></br>Export to:<FaFileWord size={30}/><FaFilePdf size={30}/><FaFileCsv size={30}/>
+                                perms={this.state.perms}><br></br><button color="red">Unpin Project</button><br></br><br></br>Export to:<FaFileWord size={30}/><FaFilePdf size={30}/><FaFileCsv size={30}/>
                                     {this.props.children? 
                                     this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
                                     ""}
@@ -300,7 +300,7 @@ export default class DatapageLayout extends React.Component {
                                 handleSeeMore={this.handleSeeMore} 
                                 handleClose={this.handleClose} 
                                 popUpContent={this.state.popUpContent}
-                                perms={this.state.perms}><br></br><button>PIN PROJECT</button><br></br><br></br>Export to:<FaFileWord size={30}/><FaFilePdf size={30}/><FaFileCsv size={30}/>
+                                perms={this.state.perms}><br></br><button>Pin Project</button><button>Archive Project</button><br></br><br></br>Export to:<FaFileWord size={30}/><FaFilePdf size={30}/><FaFileCsv size={30}/>
                                     {this.props.children? 
                                     this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
                                     ""}
@@ -851,6 +851,49 @@ class GenerateSpreadsheet extends React.Component{
             </div>
         )
     }
+
+
+
+    //archived project
+    render(){
+        return (
+            <div className="container-fluid generate-spreadsheet">
+                <div className="column-order">
+                    {this.state.columns.map((column, index) => {
+                        return <div className="column">
+                            <div className="column-order-buttons">
+                                <IconButton className={"invert"} icon={<i className="bi bi-arrow-up"></i>} onClick={() => this.reOrderColumns(index, "up")}></IconButton>
+                                <IconButton className={"invert"} icon={<i className="bi bi-arrow-down"></i>} onClick={() => this.reOrderColumns(index, "down")}></IconButton>
+                            </div>
+                            <div className="column-name">{column.label}</div>
+                        </div>
+                    })}     
+                </div>
+                <div className="generate-actions">
+                    <StdButton onClick={() => this.generateSpreadsheet()}>
+                       Archive Project
+                    </StdButton>
+
+                    {this.state.spreadsheetReady ?
+                    
+                    <CSVLink data={this.props.data} className={"forget-password"} headers={this.state.columns} filename={this.props.settings.title + ".csv"}>Download</CSVLink>
+                    :
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    }    
+                </div>
+            </div>
+        )
+    }
+
+
+
+
+
+
+
+
 
     
 }
